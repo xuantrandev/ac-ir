@@ -79,29 +79,29 @@ button:
     id: factory_reset_button
     # internal: true
 
-# output:
-#   - platform: gpio
-#     pin: 8
-#     id: status_led
-#     inverted: true
-# interval:
-#   - interval: 2s
-#     then:
-#       - if:
-#           condition:
-#             wifi.connected:
-#           then:
-#             - output.turn_on: status_led
-#           else:
-#             - output.turn_on: status_led
-#             - delay: 100ms
-#             - output.turn_off: status_led
+output:
+  - platform: gpio
+    pin: 8
+    id: status_led
+    inverted: true
+interval:
+  - interval: 2s
+    then:
+      - if:
+          condition:
+            wifi.connected:
+          then:
+            - output.turn_on: status_led
+          else:
+            - output.turn_on: status_led
+            - delay: 100ms
+            - output.turn_off: status_led
 
 # Example configuration entry
 remote_transmitter:
   pin: 
-    number:  GPIO20
-    mode: OUTPUT_OPEN_DRAIN
+    number: GPIO20
+    mode: OUTPUT
     inverted: true
   carrier_duty_percent: 50%
   id: ir_transmitter_id
@@ -120,15 +120,3 @@ climate:
     id: my_toshiba_ac
     receiver_id: ir_receiver_id
     transmitter_id: ir_transmitter_id
-
-# switch:
-#   - platform: toshiba
-#     gree_id: my_gree_ac
-#     light:
-#       name: "AC Lights"
-#     turbo:
-#       name: "AC Turbo"
-#     health:
-#       name: "AC Health"
-#     xfan:
-#       name: "AC X-Fan"
