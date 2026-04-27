@@ -1,0 +1,134 @@
+# <<: !include platform/HW/wifi.yaml
+# <<: !include platform/base.yaml
+# <<: !include platform/base_0ble_ha.yaml
+substitutions:
+  dongletype: toshiba
+  version: dev
+  build_date: "local"
+
+external_components:
+  - source:
+      type: local
+      path: components
+    components: [toshiba_ac]
+
+esphome:
+  project:
+    name: solarbox.${dongletype}
+    version: "2026.3.4"
+  min_version: 2025.7.5
+  name: toshiba
+  name_add_mac_suffix: false
+  build_path: "../build/${version}_${dongletype}"
+
+esp32:
+  board: esp32-c3-devkitm-1
+  framework:
+    type: esp-idf
+
+logger:
+  level: DEBUG
+
+
+wifi:
+  networks:
+    - ssid: "xuantran"
+      password: "01227379368"
+    # - ssid: "solarbox"
+    #   password: "Xuanmai1994"
+  ap:
+    # ssid: solarbox_dongle
+    ssid: solarbox.uk
+  # on_connect:
+  #   then:
+  #     - lambda: |-
+  #         id(network_status) = true;
+  # on_disconnect:
+  #   then:
+  #     - lambda: |-
+  #         id(network_status) = false;
+
+captive_portal:
+# Enable Home Assistant API
+api:
+  # reboot_timeout: 0s
+ota:
+  - platform: esphome
+    id: ota_esphome
+    password: "what is that"
+  # - platform: http_request
+  #   id: ota_http_request
+
+sensor:
+  - platform: internal_temperature
+    name: "Internal Temperature"
+  - platform: wifi_signal
+    name: "WiFi Signal Strength"
+  - platform: uptime
+    name: "Uptime"
+text_sensor:
+  - platform: wifi_info
+    ip_address:
+      name: "IP Address"
+
+button:
+  - platform: restart
+    name: "Khởi động lại"
+  - platform: factory_reset
+    name: "Xóa dữ liệu dongle"
+    id: factory_reset_button
+    # internal: true
+
+# output:
+#   - platform: gpio
+#     pin: 8
+#     id: status_led
+#     inverted: true
+# interval:
+#   - interval: 2s
+#     then:
+#       - if:
+#           condition:
+#             wifi.connected:
+#           then:
+#             - output.turn_on: status_led
+#           else:
+#             - output.turn_on: status_led
+#             - delay: 100ms
+#             - output.turn_off: status_led
+
+# Example configuration entry
+remote_transmitter:
+  pin: 
+    number:  GPIO20
+    mode: OUTPUT_OPEN_DRAIN
+    inverted: true
+  carrier_duty_percent: 50%
+  id: ir_transmitter_id
+remote_receiver:
+  pin: 
+    number: GPIO21
+    mode: INPUT_PULLUP
+    inverted: true
+  dump: raw
+  tolerance: 50%
+  id: ir_receiver_id
+
+climate:
+  - platform: toshiba_ac
+    name: "Toshiba AC"
+    id: my_toshiba_ac
+    receiver_id: ir_receiver_id
+    transmitter_id: ir_transmitter_id
+
+# switch:
+#   - platform: toshiba
+#     gree_id: my_gree_ac
+#     light:
+#       name: "AC Lights"
+#     turbo:
+#       name: "AC Turbo"
+#     health:
+#       name: "AC Health"
+#     xfan:
+#       name: "AC X-Fan"
