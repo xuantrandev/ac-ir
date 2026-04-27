@@ -2,7 +2,7 @@
 # <<: !include platform/base.yaml
 # <<: !include platform/base_0ble_ha.yaml
 substitutions:
-  dongletype: toshiba
+  dongletype: gree
   version: dev
   build_date: "local"
 
@@ -10,14 +10,14 @@ external_components:
   - source:
       type: local
       path: components
-    components: [toshiba_ac]
+    components: [gree_ac]
 
 esphome:
   project:
     name: solarbox.${dongletype}
     version: "2026.3.4"
   min_version: 2025.7.5
-  name: toshiba
+  name: gree
   name_add_mac_suffix: false
   build_path: "../build/${version}_${dongletype}"
 
@@ -115,8 +115,8 @@ remote_receiver:
   id: ir_receiver_id
 
 climate:
-  - platform: toshiba_ac
-    name: "Toshiba AC"
-    id: my_toshiba_ac
+  - platform: gree_ac
+    name: "Gree AC"
+    id: my_gree_ac
     receiver_id: ir_receiver_id
     transmitter_id: ir_transmitter_id
