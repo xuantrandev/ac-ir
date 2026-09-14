@@ -83,7 +83,7 @@ output:
   - platform: gpio
     pin: 8
     id: status_led
-    inverted: true
+    # inverted: true
 interval:
   - interval: 2s
     then:
@@ -103,6 +103,7 @@ remote_transmitter:
     number: GPIO0
     mode: OUTPUT
     inverted: true
+    # mode: OUTPUT_OPEN_DRAIN
   carrier_duty_percent: 50%
   id: ir_transmitter_id
 remote_receiver:

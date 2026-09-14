@@ -83,7 +83,7 @@ output:
   - platform: gpio
     pin: 8
     id: status_led
-    inverted: true
+    # inverted: true
 interval:
   - interval: 2s
     then:
